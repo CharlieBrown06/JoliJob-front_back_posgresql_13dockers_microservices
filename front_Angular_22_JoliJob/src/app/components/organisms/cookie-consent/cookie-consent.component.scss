@@ -1,0 +1,57 @@
+@use 'styles/variables' as vars;
+
+.cookie-consent-card {
+  background: vars.$color-surface;
+  border-radius: vars.$border-radius-lg;
+  padding: vars.$spacing-xl;
+  box-shadow: vars.$shadow-md;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cookie-title {
+  font-size: vars.$font-size-xl;
+  font-weight: vars.$font-weight-bold;
+  color: vars.$color-text-primary;
+  margin-bottom: vars.$spacing-md;
+  text-align: center;
+}
+
+.cookie-text {
+  font-size: vars.$font-size-base;
+  color: vars.$color-text-secondary;
+  line-height: 1.6;
+  margin-bottom: vars.$spacing-sm;
+}
+
+.cookie-link {
+  color: vars.$color-primary;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.partners-link-container {
+  text-align: center;
+  margin: vars.$spacing-md 0;
+}
+
+.partners-link {
+  color: vars.$color-primary;
+  font-size: vars.$font-size-sm;
+  text-decoration: none;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.cookie-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: vars.$spacing-sm;
+  justify-content: center;
+  margin-top: vars.$spacing-lg;
+}

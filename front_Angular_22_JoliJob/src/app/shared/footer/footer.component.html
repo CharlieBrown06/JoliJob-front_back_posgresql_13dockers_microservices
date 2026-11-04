@@ -1,0 +1,22 @@
+<footer class="app-footer">
+  <div class="social-section">
+    <span class="social-label">Nous suivre sur :</span>
+    <div class="social-icons">
+      @for (social of socialLinks; track social.name) {
+        <a [href]="social.url" 
+           [attr.aria-label]="social.name" 
+           class="social-icon"
+           target="_blank" 
+           rel="noopener noreferrer">
+          <i class="fa-brands fa-{{ social.icon }}"></i>
+        </a>
+      }
+    </div>
+  </div>
+
+  <div class="legal-section">
+    @for (link of legalLinks; track link.label) {
+      <a [href]="link.url" class="legal-link">{{ link.label }}</a>
+    }
+  </div>
+</footer>

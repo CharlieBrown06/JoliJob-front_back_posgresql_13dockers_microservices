@@ -1,0 +1,170 @@
+// ============================================
+// BUTTON STYLES - Configuration centrale
+// ============================================
+// Ce fichier définit tous les styles des boutons Angular Material
+// Utilisation: @use 'styles/components/buttons' as btn;
+
+@use '@angular/material' as mat;
+
+// ============================================
+// VARIABLES - Couleurs des boutons
+// ============================================
+$btn-primary-bg: #1976d2;
+$btn-primary-color: #fff;
+$btn-primary-hover: #1565c0;
+
+$btn-secondary-bg: #4a4a7e;
+$btn-secondary-color: #fff;
+$btn-secondary-hover: #3a3a6e;
+
+$btn-accent-bg: #5a5a8e;
+$btn-accent-color: #fff;
+$btn-accent-hover: #4a4a7e;
+
+$btn-warn-bg: #f44336;
+$btn-warn-color: #fff;
+$btn-warn-hover: #d32f2f;
+
+$btn-outline-border: #1a1a5e;
+$btn-outline-color: #1a1a5e;
+$btn-outline-hover-bg: rgba(26, 26, 94, 0.08);
+
+// ============================================
+// VARIABLES - Dimensions
+// ============================================
+$btn-padding-sm: 8px 16px;
+$btn-padding-md: 12px 24px;
+$btn-padding-lg: 16px 32px;
+
+$btn-border-radius: 4px;
+$btn-font-weight: 500;
+
+// ============================================
+// MIXINS - Styles réutilisables
+// ============================================
+@mixin btn-base {
+  font-weight: $btn-font-weight;
+  border-radius: $btn-border-radius;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background-color: $btn-primary-bg !important;
+  color: $btn-primary-color !important;
+
+  &:hover:not(:disabled) {
+    background-color: $btn-primary-hover !important;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  background-color: $btn-secondary-bg !important;
+  color: $btn-secondary-color !important;
+
+  &:hover:not(:disabled) {
+    background-color: $btn-secondary-hover !important;
+  }
+}
+
+@mixin btn-accent {
+  @include btn-base;
+  background-color: $btn-accent-bg !important;
+  color: $btn-accent-color !important;
+
+  &:hover:not(:disabled) {
+    background-color: $btn-accent-hover !important;
+  }
+}
+
+@mixin btn-warn {
+  @include btn-base;
+  background-color: $btn-warn-bg !important;
+  color: $btn-warn-color !important;
+
+  &:hover:not(:disabled) {
+    background-color: $btn-warn-hover !important;
+  }
+}
+
+@mixin btn-outline {
+  @include btn-base;
+  background-color: transparent !important;
+  border: 1px solid $btn-outline-border !important;
+  color: $btn-outline-color !important;
+
+  &:hover:not(:disabled) {
+    background-color: $btn-outline-hover-bg !important;
+  }
+}
+
+// ============================================
+// MIXINS - Tailles
+// ============================================
+@mixin btn-small {
+  padding: $btn-padding-sm;
+  font-size: 12px;
+}
+
+@mixin btn-medium {
+  padding: $btn-padding-md;
+  font-size: 14px;
+}
+
+@mixin btn-large {
+  padding: $btn-padding-lg;
+  font-size: 16px;
+}
+
+// ============================================
+// MIXINS - États
+// ============================================
+@mixin btn-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@mixin btn-full-width {
+  width: 100%;
+}
+
+// ============================================
+// CLASSES GLOBALES
+// ============================================
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.btn-accent {
+  @include btn-accent;
+}
+
+.btn-warn {
+  @include btn-warn;
+}
+
+.btn-outline {
+  @include btn-outline;
+}
+
+.btn-sm {
+  @include btn-small;
+}
+
+.btn-md {
+  @include btn-medium;
+}
+
+.btn-lg {
+  @include btn-large;
+}
+
+.btn-full {
+  @include btn-full-width;
+}

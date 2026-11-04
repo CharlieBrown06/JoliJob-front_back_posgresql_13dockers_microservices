@@ -1,0 +1,35 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: job-offer-service
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: false
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:joboffers}
+    username: ${DB_USERNAME:jolijob}
+    password: ${DB_PASSWORD:secret}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081/realms/jolijob}
+          jwk-set-uri: ${JWT_JWK_SET_URI:${JWT_ISSUER_URI:http://localhost:8081/realms/jolijob}/protocol/openid-connect/certs}
+          audience: ${JWT_AUDIENCE:jolijob-api}
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      acks: all
+      properties:
+        spring.json.add.type.headers: false
+
+company:
+  base-url: ${COMPANY_SERVICE_URL:http://localhost:8083}

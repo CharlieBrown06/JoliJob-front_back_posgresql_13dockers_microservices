@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: job-offer-indexer
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: jolijob-indexer
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JacksonJsonDeserializer
+      properties:
+        spring.json.value.default.type: com.example.jolijob.indexer.adapter.in.kafka.JobOfferEventMessage
+        spring.json.trusted.packages: com.example.jolijob.indexer.adapter.in.kafka
+  elasticsearch:
+    uris: ${ELASTICSEARCH_URIS:http://localhost:9200}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

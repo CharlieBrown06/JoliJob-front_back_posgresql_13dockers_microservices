@@ -1,0 +1,17 @@
+<div class="page-container">
+  <!-- Titre JOLI JOB -->
+  <div class="title-section">
+    <h1 class="main-title">JOLI JOB</h1>
+  </div>
+
+  @if (auth.authenticated()) {
+    <section aria-label="Session">
+      <h2>Bienvenue {{ auth.username() }}</h2>
+      <p>Vous êtes connecté à JoliJob.</p>
+      <app-button label="Se déconnecter" [disabled]="auth.busy()"
+        (clicked)="auth.logout()"></app-button>
+    </section>
+  } @else {
+    <app-auth-form [busy]="auth.busy()" (submitForm)="auth.login()"></app-auth-form>
+  }
+</div>

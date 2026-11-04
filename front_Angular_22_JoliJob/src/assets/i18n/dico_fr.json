@@ -1,0 +1,35 @@
+{
+  "header": {
+    "authMock": "AUTH_MOCK",
+    "showTags": "SHOW_TAGS",
+    "user": "Utilisateur",
+    "logout": "Déconnexion"
+  },
+  "footer": {
+    "followUs": "Nous suivre sur :",
+    "legalInfo": "Informations légales",
+    "terms": "CGU",
+    "privacy": "Politique de confidentialité",
+    "cookies": "Gérer les traceurs",
+    "accessibility": "Accessibilité : non conforme",
+    "contact": "Aide et contact"
+  },
+  "auth": {
+    "title": "Authentification",
+    "login": "Identifiant",
+    "password": "Mot de passe",
+    "submit": "Valider",
+    "forgotPassword": "Mot de passe oublié ?",
+    "register": "S'inscrire"
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès"
+  }
+}

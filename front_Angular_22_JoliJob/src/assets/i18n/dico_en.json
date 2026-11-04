@@ -1,0 +1,35 @@
+{
+  "header": {
+    "authMock": "AUTH_MOCK",
+    "showTags": "SHOW_TAGS",
+    "user": "User",
+    "logout": "Logout"
+  },
+  "footer": {
+    "followUs": "Follow us on:",
+    "legalInfo": "Legal information",
+    "terms": "Terms of use",
+    "privacy": "Privacy policy",
+    "cookies": "Manage cookies",
+    "accessibility": "Accessibility: non-compliant",
+    "contact": "Help and contact"
+  },
+  "auth": {
+    "title": "Authentication",
+    "login": "Login",
+    "password": "Password",
+    "submit": "Submit",
+    "forgotPassword": "Forgot password?",
+    "register": "Register"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

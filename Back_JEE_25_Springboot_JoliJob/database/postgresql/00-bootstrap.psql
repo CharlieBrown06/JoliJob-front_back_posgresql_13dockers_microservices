@@ -1,0 +1,13 @@
+\set ON_ERROR_STOP on
+
+-- Run with psql as a PostgreSQL administrator, outside a transaction.
+SELECT 'CREATE ROLE admin LOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION'
+WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'admin')
+\gexec
+
+-- psql prompts without storing the clear-text password in this file/history.
+\password admin
+
+SELECT 'CREATE DATABASE jolijob_db OWNER admin ENCODING ''UTF8'' TEMPLATE template0'
+WHERE NOT EXISTS (SELECT 1 FROM pg_database WHERE datname = 'jolijob_db')
+\gexec

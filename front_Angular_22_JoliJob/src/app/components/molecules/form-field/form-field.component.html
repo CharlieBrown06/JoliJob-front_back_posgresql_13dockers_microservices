@@ -1,0 +1,38 @@
+<mat-form-field appearance="outline" class="form-field" [class.full-width]="true">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  
+  @if (icon) {
+    <mat-icon matPrefix>{{ icon }}</mat-icon>
+  }
+  
+  <input 
+    matInput
+    [type]="inputType"
+    [placeholder]="placeholder"
+    [value]="value"
+    [disabled]="disabled"
+    [required]="required"
+    (input)="onInputChange($event)"
+    (blur)="onBlur()">
+  
+  @if (type === 'password') {
+    <button 
+      mat-icon-button 
+      matSuffix 
+      type="button"
+      (click)="togglePasswordVisibility()"
+      [attr.aria-label]="showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'">
+      <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+    </button>
+  }
+  
+  @if (hint) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+  
+  @if (errorMessage) {
+    <mat-error>{{ errorMessage }}</mat-error>
+  }
+</mat-form-field>

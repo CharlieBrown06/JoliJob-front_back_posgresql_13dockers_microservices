@@ -1,0 +1,91 @@
+@use 'sass:color';
+@use 'styles/variables' as vars;
+
+// Variantes de boutons
+.btn-primary {
+  background-color: vars.$color-primary !important;
+  color: vars.$color-text-inverse !important;
+
+  &:hover:not(:disabled) {
+    background-color: vars.$color-primary-dark !important;
+  }
+}
+
+.btn-secondary {
+  background-color: vars.$color-secondary !important;
+  color: vars.$color-text-inverse !important;
+
+  &:hover:not(:disabled) {
+    background-color: vars.$color-secondary-dark !important;
+  }
+}
+
+.btn-accent {
+  background-color: vars.$color-accent !important;
+  color: vars.$color-text-inverse !important;
+
+  &:hover:not(:disabled) {
+    background-color: vars.$color-secondary-dark !important;
+  }
+}
+
+.btn-warn {
+  background-color: vars.$color-warn !important;
+  color: vars.$color-text-inverse !important;
+
+  &:hover:not(:disabled) {
+    background-color: color.adjust(vars.$color-warn, $lightness: -10%) !important;
+  }
+}
+
+.btn-outline {
+  background-color: transparent !important;
+  border: 1px solid vars.$color-bg-dark !important;
+  color: vars.$color-bg-dark !important;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(vars.$color-bg-dark, 0.08) !important;
+  }
+}
+
+// Tailles
+.btn-sm {
+  padding: vars.$spacing-sm vars.$spacing-md;
+  font-size: vars.$font-size-xs;
+}
+
+.btn-md {
+  padding: vars.$spacing-md vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
+}
+
+.btn-lg {
+  padding: vars.$spacing-md vars.$spacing-xl;
+  font-size: vars.$font-size-md;
+}
+
+// Full width
+.btn-full {
+  width: 100%;
+}
+
+// Label et icon
+.btn-label {
+  display: inline-flex;
+  align-items: center;
+}
+
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  transition: all vars.$transition-normal;
+  border-radius: vars.$border-radius-sm;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}

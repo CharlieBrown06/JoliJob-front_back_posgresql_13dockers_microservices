@@ -1,0 +1,37 @@
+<div class="cookie-consent-card">
+  <h2 class="cookie-title">Respecter votre vie privée est important pour nous</h2>
+  
+  <p class="cookie-text">
+    Notre site utilise des cookies pour mesurer la fréquentation du site afin d'en 
+    améliorer le fonctionnement et l'administration et, avec votre accord, pour 
+    améliorer votre expérience utilisateur, ainsi que pour vous proposer des services 
+    interactifs fournis avec nos partenaires.
+  </p>
+  
+  <p class="cookie-text">
+    Vous pouvez changer ce choix à tout moment en vous rendant sur la page 
+    <a href="/cookies" class="cookie-link">Infos Cookies</a>
+  </p>
+  
+  <div class="partners-link-container">
+    <a href="/partners" class="partners-link">Voir nos partenaires</a>
+  </div>
+  
+  <div class="cookie-buttons">
+    <app-button 
+      label="Paramétrer les cookies"
+      variant="outline"
+      (clicked)="onConfigure()">
+    </app-button>
+    <app-button 
+      label="Refuser tous les cookies"
+      variant="secondary"
+      (clicked)="onRefuse()">
+    </app-button>
+    <app-button 
+      label="Accepter tous les cookies"
+      variant="primary"
+      (clicked)="onAccept()">
+    </app-button>
+  </div>
+</div>

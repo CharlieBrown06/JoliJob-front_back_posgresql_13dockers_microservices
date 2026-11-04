@@ -1,0 +1,15 @@
+<div class="auth-card">
+  <h2 class="auth-title">Authentification</h2>
+  
+  <p>Connectez-vous sur la page sécurisée Keycloak. Votre mot de passe n'est pas transmis à cette application.</p>
+    
+    <div class="form-actions">
+      <app-button
+        label="Se connecter"
+        variant="primary"
+        [fullWidth]="true"
+        [disabled]="busy"
+        (clicked)="onSubmit()">
+      </app-button>
+    </div>
+</div>

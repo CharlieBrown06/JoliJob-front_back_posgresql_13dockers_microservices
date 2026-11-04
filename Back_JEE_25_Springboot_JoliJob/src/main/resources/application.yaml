@@ -1,0 +1,121 @@
+spring:
+  application:
+    name: joliJob
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:jolijob}
+    username: ${DB_USERNAME:jolijob}
+    password: ${DB_PASSWORD:secret}
+    driver-class-name: org.postgresql.Driver
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+    consumer:
+      group-id: jolijob-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.example.jolijob.shared.event"
+
+  elasticsearch:
+    uris: http://localhost:9200
+
+  modulith:
+    events:
+      kafka:
+        enable-transactions: false
+
+  security:
+    oauth2:
+      authorizationserver:
+        issuer: http://localhost:8081
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081
+
+  docker:
+    compose:
+      enabled: true
+      file: compose.yaml
+
+  mail:
+    host: localhost
+    port: 1025
+    username: ''
+    password: ''
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+
+server:
+  port: 8081
+
+jolijob:
+  cors:
+    allowed-origins: "http://localhost:4200,http://localhost:3000"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    try-it-out-enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    oauth2-redirect-url: http://localhost:4200/callback
+  group-configs:
+    - group: auth
+      display-name: "Auth Service"
+      paths-to-match: /api/v1/auth/**
+    - group: companies
+      display-name: "Company Service"
+      paths-to-match: /api/v1/companies/**
+    - group: candidates
+      display-name: "Candidate Service"
+      paths-to-match: /api/v1/candidates/**
+    - group: job-offers
+      display-name: "Job Offer Service"
+      paths-to-match: /api/v1/job-offers/**
+    - group: applications
+      display-name: "Application Service"
+      paths-to-match: /api/v1/applications/**
+    - group: search
+      display-name: "Search Service"
+      paths-to-match: /api/v1/search/**
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,modulith
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.example.jolijob: DEBUG
+    org.springframework.security: INFO
+    org.springframework.kafka: INFO

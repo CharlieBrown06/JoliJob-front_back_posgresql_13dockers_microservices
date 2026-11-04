@@ -1,0 +1,28 @@
+@use 'styles/variables' as vars;
+
+.auth-card {
+  background: vars.$color-surface;
+  border-radius: vars.$border-radius-lg;
+  padding: vars.$spacing-xl;
+  box-shadow: vars.$shadow-md;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.auth-title {
+  font-size: vars.$font-size-xl;
+  font-weight: vars.$font-weight-bold;
+  color: vars.$color-text-primary;
+  margin-bottom: vars.$spacing-lg;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$spacing-md;
+}
+
+.form-actions {
+  margin-top: vars.$spacing-md;
+}

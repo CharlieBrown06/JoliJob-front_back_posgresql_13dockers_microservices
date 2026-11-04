@@ -1,0 +1,14 @@
+<button 
+  mat-flat-button
+  [type]="type"
+  [disabled]="disabled"
+  [ngClass]="buttonClasses"
+  (click)="onClick()">
+  @if (icon && iconPosition === 'left') {
+    <mat-icon>{{ icon }}</mat-icon>
+  }
+  <span class="btn-label">{{ label }}</span>
+  @if (icon && iconPosition === 'right') {
+    <mat-icon>{{ icon }}</mat-icon>
+  }
+</button>

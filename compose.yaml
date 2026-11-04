@@ -1,0 +1,263 @@
+services:
+  postgres:
+    image: postgres:17
+    cpus: 0.5
+    mem_limit: 512m
+    memswap_limit: 512m
+    environment:
+      POSTGRES_DB: jolijob
+      POSTGRES_USER: jolijob
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./Back_JEE_25_Springboot_JoliJob/database/postgresql/docker-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jolijob -d jolijob"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  kafka:
+    image: apache/kafka-native:latest
+    cpus: 0.5
+    mem_limit: 512m
+    memswap_limit: 512m
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 3
+      CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.5.5
+    cpus: 1.0
+    mem_limit: 1536m
+    memswap_limit: 1536m
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "127.0.0.1:9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9200 >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  mailpit:
+    image: axllent/mailpit:latest
+    cpus: 0.25
+    mem_limit: 128m
+    memswap_limit: 128m
+    ports:
+      - "127.0.0.1:1025:1025"
+      - "127.0.0.1:8025:8025"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.3.2
+    cpus: 1.0
+    mem_limit: 1024m
+    memswap_limit: 1024m
+    command: ["start-dev", "--import-realm", "--http-port=8080"]
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: jolijob
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_BOOTSTRAP_ADMIN_USERNAME:?Set KC_BOOTSTRAP_ADMIN_USERNAME in .env}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_BOOTSTRAP_ADMIN_PASSWORD:?Set KC_BOOTSTRAP_ADMIN_PASSWORD in .env}
+      KC_HOSTNAME: http://localhost:8081
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "127.0.0.1:8081:8080"
+    volumes:
+      - ./Back_JEE_25_Springboot_JoliJob/identity/keycloak/jolijob-realm.json:/opt/keycloak/data/import/jolijob-realm.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  profile-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: profile-service
+    environment:
+      DB_HOST: postgres
+      DB_NAME: profiles
+      DB_USERNAME: jolijob
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      JWT_ISSUER_URI: http://localhost:8081/realms/jolijob
+      JWT_JWK_SET_URI: http://keycloak:8080/realms/jolijob/protocol/openid-connect/certs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+
+  job-offer-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: job-offer-service
+    environment:
+      DB_HOST: postgres
+      DB_NAME: joboffers
+      DB_USERNAME: jolijob
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      JWT_ISSUER_URI: http://localhost:8081/realms/jolijob
+      JWT_JWK_SET_URI: http://keycloak:8080/realms/jolijob/protocol/openid-connect/certs
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      COMPANY_SERVICE_URL: http://profile-service:8083
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      keycloak:
+        condition: service_started
+      profile-service:
+        condition: service_started
+
+  application-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: application-service
+    environment:
+      DB_HOST: postgres
+      DB_NAME: applications
+      DB_USERNAME: jolijob
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      JWT_ISSUER_URI: http://localhost:8081/realms/jolijob
+      JWT_JWK_SET_URI: http://keycloak:8080/realms/jolijob/protocol/openid-connect/certs
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      PROFILE_SERVICE_URL: http://profile-service:8083
+      JOB_OFFER_SERVICE_URL: http://job-offer-service:8084
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      keycloak:
+        condition: service_started
+      profile-service:
+        condition: service_started
+      job-offer-service:
+        condition: service_started
+
+  search-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: search-service
+    environment:
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+  job-offer-indexer-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: job-offer-indexer-service
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      ELASTICSEARCH_URIS: http://elasticsearch:9200
+    depends_on:
+      kafka:
+        condition: service_started
+      elasticsearch:
+        condition: service_healthy
+
+  notification-service:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: notification-service
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+    depends_on:
+      kafka:
+        condition: service_started
+      mailpit:
+        condition: service_started
+
+  api-gateway:
+    cpus: 1.0
+    mem_limit: 512m
+    memswap_limit: 512m
+    build:
+      context: ./Back_JEE_25_Springboot_JoliJob
+      dockerfile: Dockerfile
+      args:
+        SERVICE: api-gateway
+    environment:
+      PROFILE_SERVICE_URL: http://profile-service:8083
+      JOB_OFFER_SERVICE_URL: http://job-offer-service:8084
+      APPLICATION_SERVICE_URL: http://application-service:8085
+      SEARCH_SERVICE_URL: http://search-service:8086
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - profile-service
+      - job-offer-service
+      - application-service
+      - search-service
+
+  frontend:
+    cpus: 0.25
+    mem_limit: 128m
+    memswap_limit: 128m
+    build:
+      context: ./front_Angular_22_JoliJob
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:4200:80"
+    depends_on:
+      - api-gateway
+
+volumes:
+  postgres-data:
+  elasticsearch-data:

@@ -1,0 +1,53 @@
+.app-footer {
+  border-top: 1px solid #e0e0e0;
+  padding: 16px 24px;
+  background-color: #fff;
+}
+
+.social-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.social-label {
+  font-size: 14px;
+  color: #333;
+}
+
+.social-icons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.social-icon {
+  color: #333;
+  font-size: 18px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1976d2;
+  }
+}
+
+.legal-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  align-items: center;
+}
+
+.legal-link {
+  font-size: 14px;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #1976d2;
+    text-decoration: underline;
+  }
+}

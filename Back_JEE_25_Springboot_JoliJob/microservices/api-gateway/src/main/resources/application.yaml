@@ -1,0 +1,34 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          httpclient:
+            connect-timeout: 5000
+            response-timeout: 30s
+          routes:
+            - id: profile-candidates
+              uri: ${PROFILE_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/v1/candidates/**
+            - id: profile-companies
+              uri: ${PROFILE_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/v1/companies/**
+            - id: job-offers
+              uri: ${JOB_OFFER_SERVICE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/v1/job-offers/**
+            - id: applications
+              uri: ${APPLICATION_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/v1/applications/**
+            - id: search
+              uri: ${SEARCH_SERVICE_URL:http://localhost:8086}
+              predicates:
+                - Path=/api/v1/search/**

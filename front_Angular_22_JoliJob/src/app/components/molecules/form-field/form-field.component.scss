@@ -1,0 +1,12 @@
+@use 'styles/variables' as vars;
+
+.form-field {
+  &.full-width {
+    width: 100%;
+  }
+}
+
+mat-icon[matPrefix] {
+  margin-right: vars.$spacing-sm;
+  color: vars.$color-text-secondary;
+}

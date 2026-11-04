@@ -1,0 +1,24 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+spring:
+  application:
+    name: profile-service
+  jackson:
+    deserialization:
+      fail-on-null-for-primitives: false
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:profiles}
+    username: ${DB_USERNAME:jolijob}
+    password: ${DB_PASSWORD:secret}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI:http://localhost:8081/realms/jolijob}
+          jwk-set-uri: ${JWT_JWK_SET_URI:${JWT_ISSUER_URI:http://localhost:8081/realms/jolijob}/protocol/openid-connect/certs}
+          audience: ${JWT_AUDIENCE:jolijob-api}

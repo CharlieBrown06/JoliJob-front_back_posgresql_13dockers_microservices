@@ -1,0 +1,22 @@
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.left-section {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.right-section {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}

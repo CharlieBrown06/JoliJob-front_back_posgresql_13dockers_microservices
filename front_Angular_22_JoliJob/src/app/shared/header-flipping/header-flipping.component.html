@@ -1,0 +1,30 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="left-section">
+    <a mat-button routerLink="/auth">JoliJob</a>
+    
+    <button mat-flat-button 
+            [color]="showTagsEnabled ? 'accent' : 'primary'"
+            (click)="toggleShowTags()">
+      SHOW_TAGS
+    </button>
+  </div>
+
+  <span class="spacer"></span>
+
+  <div class="right-section">
+    @if (auth.authenticated()) {
+      <a mat-button routerLink="/auth">
+        <mat-icon>person</mat-icon>
+        {{ auth.username() }}
+      </a>
+      <button mat-button (click)="auth.logout()" [disabled]="auth.busy()">
+        <mat-icon>logout</mat-icon>
+        Se déconnecter
+      </button>
+    } @else {
+      <button mat-button (click)="auth.login()" [disabled]="auth.busy()">
+        Se connecter
+      </button>
+    }
+  </div>
+</mat-toolbar>

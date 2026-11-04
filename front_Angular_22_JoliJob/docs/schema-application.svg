@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1120" viewBox="0 0 1440 1120" role="img" aria-labelledby="title description">
+  <title id="title">Schéma de l’application JoliJob</title>
+  <desc id="description">Architecture de la SPA Angular JoliJob, ses routes, composants partagés, consentement aux cookies et authentification Keycloak avec PKCE et accès aux API Spring Boot.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f4f7ff"/>
+      <stop offset="1" stop-color="#f7f3ff"/>
+    </linearGradient>
+    <linearGradient id="brand" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5145cd"/>
+      <stop offset="1" stop-color="#7c4dff"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#28345f" flood-opacity=".10"/>
+    </filter>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#6554d9"/>
+    </marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#14998c"/>
+    </marker>
+    <marker id="arrow-orange" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#e58a28"/>
+    </marker>
+    <style>
+      text { font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; fill: #202744; }
+      .title { font-size: 34px; font-weight: 750; fill: #fff; }
+      .subtitle { font-size: 16px; fill: #e8e7ff; }
+      .section { font-size: 17px; font-weight: 750; letter-spacing: 1.2px; fill: #68708c; }
+      .box-title { font-size: 20px; font-weight: 750; }
+      .body { font-size: 15px; fill: #4d5672; }
+      .small { font-size: 13px; fill: #68708c; }
+      .pill { font-size: 13px; font-weight: 700; }
+      .line { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1440" height="1120" fill="url(#background)"/>
+  <rect x="34" y="28" width="1372" height="126" rx="24" fill="url(#brand)"/>
+  <circle cx="1326" cy="58" r="44" fill="#ffffff" opacity=".10"/>
+  <circle cx="1372" cy="129" r="64" fill="#ffffff" opacity=".08"/>
+  <text x="76" y="83" class="title">JoliJob · schéma de l’application</text>
+  <text x="78" y="119" class="subtitle">Application web Angular 22 — connexion Keycloak et API Spring Boot</text>
+
+  <text x="64" y="200" class="section">DÉMARRAGE ET COQUE COMMUNE</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="222" width="270" height="100" rx="18" fill="#fff" stroke="#d7d4ff" stroke-width="2"/>
+    <rect x="64" y="222" width="9" height="100" rx="4" fill="#6254d9"/>
+    <text x="91" y="260" class="box-title">main.ts</text>
+    <text x="91" y="288" class="body">bootstrapApplication()</text>
+
+    <rect x="397" y="222" width="270" height="100" rx="18" fill="#fff" stroke="#d7d4ff" stroke-width="2"/>
+    <rect x="397" y="222" width="9" height="100" rx="4" fill="#6254d9"/>
+    <text x="424" y="260" class="box-title">AppComponent</text>
+    <text x="424" y="288" class="body">Header · RouterOutlet · Footer</text>
+
+    <rect x="730" y="222" width="270" height="100" rx="18" fill="#fff" stroke="#d7d4ff" stroke-width="2"/>
+    <rect x="730" y="222" width="9" height="100" rx="4" fill="#6254d9"/>
+    <text x="757" y="260" class="box-title">Router Angular</text>
+    <text x="757" y="288" class="body">Configuration dans app.routes.ts</text>
+  </g>
+  <path d="M334 272 H386" class="line" stroke="#6554d9" marker-end="url(#arrow-purple)"/>
+  <path d="M667 272 H719" class="line" stroke="#6554d9" marker-end="url(#arrow-purple)"/>
+
+  <text x="64" y="382" class="section">ROUTES ET PARCOURS UTILISATEUR</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="408" width="220" height="78" rx="16" fill="#eeeaff" stroke="#c8c0ff" stroke-width="2"/>
+    <text x="88" y="440" class="box-title" fill="#5145cd">/</text>
+    <text x="88" y="466" class="body">redirige vers /privacy</text>
+
+    <rect x="362" y="399" width="400" height="250" rx="20" fill="#e7f8f5" stroke="#9cddd4" stroke-width="2"/>
+    <rect x="362" y="399" width="400" height="48" rx="20" fill="#14998c"/>
+    <path d="M362 427 H762 V447 H362 Z" fill="#14998c"/>
+    <text x="386" y="431" font-size="18" font-weight="750" fill="#fff">/privacy · PageRespectViePrivee</text>
+    <text x="390" y="480" class="body">Contient l’organisme de consentement cookies</text>
+
+    <rect x="391" y="502" width="340" height="122" rx="16" fill="#fff" stroke="#bce8e1" stroke-width="2"/>
+    <text x="414" y="534" class="box-title">CookieConsentComponent</text>
+    <text x="414" y="562" class="body">Émet : accept · refuse · configure</text>
+    <rect x="414" y="579" width="122" height="27" rx="13" fill="#fff1d9"/>
+    <text x="428" y="598" class="pill" fill="#a75b08">configure → log</text>
+
+    <rect x="900" y="399" width="400" height="250" rx="20" fill="#fff4e7" stroke="#f0c58e" stroke-width="2"/>
+    <rect x="900" y="399" width="400" height="48" rx="20" fill="#e58a28"/>
+    <path d="M900 427 H1300 V447 H900 Z" fill="#e58a28"/>
+    <text x="924" y="431" font-size="18" font-weight="750" fill="#fff">/auth · PageAuthentification</text>
+    <text x="928" y="480" class="body">Connexion ou session utilisateur</text>
+
+    <rect x="929" y="502" width="342" height="122" rx="16" fill="#fff" stroke="#f2d5ae" stroke-width="2"/>
+    <text x="952" y="534" class="box-title">AuthFormComponent</text>
+    <text x="952" y="562" class="body">Bouton de connexion Keycloak</text>
+    <text x="952" y="591" class="small">Aucun mot de passe collecté par Angular</text>
+  </g>
+  <path d="M284 447 H344" class="line" stroke="#6554d9" marker-end="url(#arrow-purple)"/>
+  <text x="290" y="430" class="small">redirect</text>
+  <path d="M881 272 V358 H562 V388" class="line" stroke="#6554d9" marker-end="url(#arrow-purple)"/>
+  <text x="590" y="349" class="small">route /privacy</text>
+  <path d="M881 272 V358 H1100 V388" class="line" stroke="#6554d9" marker-end="url(#arrow-purple)"/>
+  <text x="1032" y="349" class="small">route /auth</text>
+
+  <path d="M762 550 H888" class="line" stroke="#14998c" marker-end="url(#arrow-teal)"/>
+  <rect x="770" y="514" width="111" height="27" rx="13" fill="#d8f3ee"/>
+  <text x="782" y="533" class="pill" fill="#08796f">accept / refuse</text>
+  <text x="785" y="577" class="small">navigate('/auth')</text>
+  <path d="M1100 649 V698" class="line" stroke="#e58a28" marker-end="url(#arrow-orange)"/>
+  <text x="1117" y="681" class="small">submitForm</text>
+
+  <text x="64" y="733" class="section">COMPOSANTS PARTAGÉS, RÉSULTAT ET LIMITES ACTUELLES</text>
+  <g filter="url(#shadow)">
+    <rect x="64" y="759" width="390" height="132" rx="18" fill="#fff" stroke="#d7d4ff" stroke-width="2"/>
+    <rect x="64" y="759" width="9" height="132" rx="4" fill="#6254d9"/>
+    <text x="91" y="797" class="box-title">Composants réutilisables</text>
+    <text x="91" y="827" class="body">FormField · Button</text>
+    <text x="91" y="853" class="body">Utilisés dans les formulaires et actions</text>
+    <text x="91" y="875" class="small">Structure Atomic Design (atom / molecule / organism)</text>
+
+    <rect x="506" y="759" width="400" height="132" rx="18" fill="#fff7e9" stroke="#f0c58e" stroke-width="2"/>
+    <rect x="506" y="759" width="9" height="132" rx="4" fill="#e58a28"/>
+    <text x="533" y="797" class="box-title">AuthService · Keycloak</text>
+    <text x="533" y="827" class="body">Code + PKCE S256 · /callback → /auth</text>
+    <text x="533" y="853" class="body">Jetons en mémoire et renouvellement</text>
+    <text x="533" y="875" class="small">Bearer /api/v1/* → gateway → services Spring Boot</text>
+
+    <rect x="958" y="759" width="342" height="132" rx="18" fill="#fff" stroke="#cbd5e1" stroke-width="2"/>
+    <rect x="958" y="759" width="9" height="132" rx="4" fill="#8290a8"/>
+    <text x="985" y="797" class="box-title">Navigation partielle</text>
+    <text x="985" y="827" class="body">Plusieurs liens légaux et cookies</text>
+    <text x="985" y="853" class="body">pointent vers des chemins sans route</text>
+    <text x="985" y="875" class="small">déclarée actuellement.</text>
+  </g>
+
+  <text x="64" y="944" class="section">ÉLÉMENTS TRANSVERSAUX</text>
+  <g>
+    <rect x="64" y="968" width="410" height="94" rx="16" fill="#e9edff" stroke="#c7d0ff" stroke-width="2"/>
+    <text x="88" y="1002" class="box-title">HeaderFlipping</text>
+    <text x="88" y="1030" class="body">Session Keycloak · connexion / déconnexion</text>
+    <rect x="515" y="968" width="410" height="94" rx="16" fill="#f1eaff" stroke="#d7c6ff" stroke-width="2"/>
+    <text x="539" y="1002" class="box-title">Footer</text>
+    <text x="539" y="1030" class="body">Réseaux sociaux et liens légaux (certains chemins non routés)</text>
+    <rect x="966" y="968" width="334" height="94" rx="16" fill="#eef2f7" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="990" y="1002" class="box-title">Fichiers statiques</text>
+    <text x="990" y="1030" class="body">Configurations / traductions présentes,</text>
+    <text x="990" y="1051" class="small">mais pas consommées dans le code applicatif.</text>
+  </g>
+  <path d="M196 322 V342 H881 V260" class="line" stroke="#a9a2df" stroke-dasharray="6 8"/>
+  <path d="M531 891 V924 H269 V958" class="line" stroke="#a9a2df" stroke-dasharray="6 8"/>
+  <path d="M709 891 V958" class="line" stroke="#a9a2df" stroke-dasharray="6 8"/>
+  <path d="M1129 891 V958" class="line" stroke="#a9a2df" stroke-dasharray="6 8"/>
+</svg>
